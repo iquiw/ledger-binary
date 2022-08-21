@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      BOOST_VERSION: 1.80.0
+      BOOST_VERSION_UB: 1_80_0
+
+    steps:
+      - name: Build boost
+        run: |
+          curl -LO "https://boostorg.jfrog.io/artifactory/main/release/$env:BOOST_VERSION/source/boost_$env:BOOST_VERSION_UB.7z"
+          7z x "boost_$env:BOOST_VERSION_UB.7z"
+          Rename-Item "boost_$env:BOOST_VERSION_UB" boost
+          cd boost
+          .\bootstrap.bat
+          .\b2.exe link=static runtime-link=static threading=multi --layout=versioned
