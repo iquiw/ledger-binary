@@ -29,3 +29,15 @@ jobs:
           cd boost
           .\bootstrap.bat
           .\b2.exe link=static runtime-link=static threading=multi --layout=versioned
+
+      - name: Checkout MPIR
+        uses: actions/checkout@v2
+        with:
+          repository: BrianGladman/mpir
+          ref: 33be9007f95b85230da2330ef3ed525896370cc2
+          path: mpir
+
+      - name: Build MPIR
+        run: |
+          cd mpir\msvc\vs22
+          .\msbuild.bat gc LIB Win32 Release
