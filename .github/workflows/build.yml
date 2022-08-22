@@ -11,6 +11,7 @@ jobs:
     env:
       BOOST_VERSION: 1.80.0
       BOOST_VERSION_UB: 1_80_0
+      LEDGER_VERSION: cccb827886773066665e99df4a4ecec4ab5bda14
 
     steps:
       - name: Cache boost build
@@ -53,3 +54,31 @@ jobs:
         run: |
           cd mpfr\build.vs22\lib_mpfr
           & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release lib_mpfr.vcxproj
+
+      - name: Checkout Ledger
+        uses: actions/checkout@v2
+        with:
+          repository: ledger/ledger
+          ref: ${{ env.LEDGER_VERSION }}
+          path: ledger
+
+      - name: Build Ledger
+        run: |
+          cd ledger
+          cmake `
+          	-DCMAKE_BUILD_TYPE:STRING="Release" `
+          	-DBUILD_LIBRARY=OFF `
+          	-DMPFR_LIB:FILEPATH="../../mpfr/build.vs22/lib/Win32/Release/mpfr" `
+          	-DGMP_LIB:FILEPATH="../../mpir/lib/win32/Release/mpir" `
+          	-DMPFR_PATH:PATH="../mpfr/lib/Win32/Release" `
+          	-DGMP_PATH:PATH="../mpir/lib/win32/Release" `
+          	-DBUILD_DOCS:BOOL="0" `
+          	-DHAVE_GETPWUID:BOOL="0" `
+          	-DHAVE_GETPWNAM:BOOL="0" `
+          	-DHAVE_ISATTY:BOOL="0" `
+          	-DBOOST_ROOT:PATH="../boost/" `
+          	-DBoost_USE_STATIC_LIBS:BOOL="1" `
+          	-DCMAKE_CXX_FLAGS_RELEASE:STRING="/MT /Zi /Ob0 /Od" `
+          	-A Win32 `
+          	-G "Visual Studio 17"
+          & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release src\ledger.vcxproj
