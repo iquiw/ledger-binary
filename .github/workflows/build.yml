@@ -41,3 +41,15 @@ jobs:
         run: |
           cd mpir\msvc\vs22
           .\msbuild.bat gc LIB Win32 Release
+
+      - name: Checkout MPFR
+        uses: actions/checkout@v2
+        with:
+          repository: BrianGladman/mpfr
+          ref: b51386896b8bffc11e4b30706c5ec3e64858e16a
+          path: mpfr
+
+      - name: Build MPFR
+        run: |
+          cd mpfr\build.vs22\lib_mpfr
+          & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release lib_mpfr.vcxproj
