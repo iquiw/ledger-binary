@@ -1,0 +1,31 @@
+diff --git a/src/global.cc b/src/global.cc
+index 3fa9f342..624bd2ed 100644
+--- a/src/global.cc
++++ b/src/global.cc
+@@ -40,6 +40,10 @@
+ #include "item.h"
+ #include "journal.h"
+ #include "pool.h"
++#if defined(_WIN32)
++#include <boost/dll.hpp>
++#include <boost/process.hpp>
++#endif
+ 
+ namespace ledger {
+ 
+@@ -475,6 +479,15 @@ void global_scope_t::visit_man_page() const
+ 
+   int status = -1;
+   wait(&status);
++#elif defined(_WIN32)
++  boost::dll::fs::path path = boost::dll::program_location().parent_path();
++  path /= "ledger.0";
++  boost::process::filesystem::path less = boost::process::search_path("less.exe");
++  if (less.empty()) {
++      std::cerr << "help option requires \"less\" command!" << std::endl;
++  } else {
++      boost::process::system(less, "-R", path);
++  }
+ #endif
+   exit(0);                      // parent
+ }

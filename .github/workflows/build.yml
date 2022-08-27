@@ -14,6 +14,9 @@ jobs:
       LEDGER_VERSION: 3.2.1
 
     steps:
+      - name: Checkout Ledger
+        uses: actions/checkout@v2
+
       - name: Cache boost build
         id: cache-boost
         uses: actions/cache@v3
@@ -67,6 +70,7 @@ jobs:
         run: |
           cd ledger
           $GITCOMMIT_FULL = git rev-parse HEAD
+          patch -p1 -i ../patch-help-on-windows.diff
           cmake `
           	-DCMAKE_BUILD_TYPE:STRING="Release" `
           	-DBUILD_LIBRARY=OFF `
