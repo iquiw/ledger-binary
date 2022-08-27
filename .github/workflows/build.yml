@@ -47,7 +47,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: BrianGladman/mpfr
-          ref: b51386896b8bffc11e4b30706c5ec3e64858e16a
+          ref: 571dbb787f22e7cbdfe5be74cc3e7577ae504949
           path: mpfr
 
       - name: Build MPFR
