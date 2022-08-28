@@ -76,7 +76,7 @@ jobs:
           $GITCOMMIT_FULL = git rev-parse HEAD
           patch -p1 -i ../patch-help-on-windows.diff
 
-          & "C:\ProgramData\chocolatey\bin\groff.exe" -mtty-char -Tutf8 -mandoc doc\ledger.1 > Release\ledger.0
+          & "C:\ProgramData\chocolatey\bin\groff.exe" -mtty-char -Tutf8 -mandoc doc\ledger.1 > ledger.0
 
           cmake `
           	-DCMAKE_BUILD_TYPE:STRING="Release" `
@@ -101,7 +101,7 @@ jobs:
         id: archive
         run: |
           cd ledger\Release
-          Compress-Archive -Path ledger.exe,ledger.0,..\LICENSE.md -DestinationPath ledger-v${{ env.LEDGER_VERSION }}.zip
+          Compress-Archive -Path ledger.exe,..\ledger.0,..\LICENSE.md -DestinationPath ledger-v${{ env.LEDGER_VERSION }}.zip
           $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 ledger-v${{ env.LEDGER_VERSION }}.zip).Hash
           "$ARTIFACT_HASH  ledger-v${{ env.LEDGER_VERSION }}.zip"| Out-File -Encoding ascii -File sha256sum.txt
           Write-Output "::set-output name=hash::$ARTIFACT_HASH"
