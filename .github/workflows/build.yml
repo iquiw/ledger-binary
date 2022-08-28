@@ -14,7 +14,7 @@ jobs:
       LEDGER_VERSION: 3.2.1
 
     steps:
-      - name: Checkout Ledger
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Cache boost build
@@ -58,6 +58,10 @@ jobs:
           cd mpfr\build.vs22\lib_mpfr
           & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release lib_mpfr.vcxproj
 
+      - name: Install groff
+        run: |
+          choco install -y groff
+
       - name: Checkout Ledger
         uses: actions/checkout@v2
         with:
@@ -71,6 +75,9 @@ jobs:
           cd ledger
           $GITCOMMIT_FULL = git rev-parse HEAD
           patch -p1 -i ../patch-help-on-windows.diff
+
+          & "C:\ProgramData\chocolatey\bin\groff.exe" -mtty-char -Tutf8 -mandoc doc\ledger.1 > Release\ledger.0
+
           cmake `
           	-DCMAKE_BUILD_TYPE:STRING="Release" `
           	-DBUILD_LIBRARY=OFF `
@@ -94,7 +101,7 @@ jobs:
         id: archive
         run: |
           cd ledger\Release
-          Compress-Archive -Path ledger.exe -DestinationPath ledger-v${{ env.LEDGER_VERSION }}.zip
+          Compress-Archive -Path ledger.exe,ledger.0 -DestinationPath ledger-v${{ env.LEDGER_VERSION }}.zip
           $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 ledger-v${{ env.LEDGER_VERSION }}.zip).Hash
           "$ARTIFACT_HASH  ledger-v${{ env.LEDGER_VERSION }}.zip"| Out-File -Encoding ascii -File sha256sum.txt
           Write-Output "::set-output name=hash::$ARTIFACT_HASH"
