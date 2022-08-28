@@ -101,7 +101,7 @@ jobs:
         id: archive
         run: |
           cd ledger\Release
-          Compress-Archive -Path ledger.exe,ledger.0 -DestinationPath ledger-v${{ env.LEDGER_VERSION }}.zip
+          Compress-Archive -Path ledger.exe,ledger.0,..\LICENSE.md -DestinationPath ledger-v${{ env.LEDGER_VERSION }}.zip
           $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 ledger-v${{ env.LEDGER_VERSION }}.zip).Hash
           "$ARTIFACT_HASH  ledger-v${{ env.LEDGER_VERSION }}.zip"| Out-File -Encoding ascii -File sha256sum.txt
           Write-Output "::set-output name=hash::$ARTIFACT_HASH"
