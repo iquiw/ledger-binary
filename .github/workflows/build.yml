@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: BrianGladman/mpir
-          ref: 33be9007f95b85230da2330ef3ed525896370cc2
+          ref: 7f144d3eb510cac8af0a745357e5723396a70dc0
           path: mpir
 
       - name: Build MPIR
@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: BrianGladman/mpfr
-          ref: 571dbb787f22e7cbdfe5be74cc3e7577ae504949
+          ref: d235ed27d83d51ccd8523aff829de64e4f2d895e
           path: mpfr
 
       - name: Build MPFR

@@ -7,5 +7,5 @@ This repository sets up GitHub Action for Ledger build workflow, which builds ht
 ## Libraries
 
 * [Boost](https://www.boost.org/) v1.80.0
-* [MPIR](https://github.com/BrianGladman/mpir) commit `33be9007f95b85230da2330ef3ed525896370cc2`
-* [MPFR](https://github.com/BrianGladman/mpfr) commit `571dbb787f22e7cbdfe5be74cc3e7577ae504949`
+* [MPIR](https://github.com/BrianGladman/mpir) commit `7f144d3eb510cac8af0a745357e5723396a70dc0`
+* [MPFR](https://github.com/BrianGladman/mpfr) commit `d235ed27d83d51ccd8523aff829de64e4f2d895e`
