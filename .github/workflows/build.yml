@@ -11,7 +11,7 @@ jobs:
     env:
       BOOST_VERSION: 1.81.0
       BOOST_VERSION_UB: 1_81_0
-      LEDGER_VERSION: 3.3.0
+      LEDGER_VERSION: 3.3.1
 
     steps:
       - name: Checkout repository
